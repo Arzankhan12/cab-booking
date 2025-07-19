@@ -1,0 +1,33 @@
+.feature-list li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 25px;
+  }
+  
+  .feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #ffb700;
+    font-weight: bold;
+  }
+  
+  .price-tag {
+    background-color: #f8f9fa;
+    border-left: 4px solid #ffb700;
+    padding: 10px 15px;
+    border-radius: 4px;
+  }
+  
+  .service-image-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .service-image-container img {
+    max-height: 400px;
+    object-fit: cover;
+    width: 100%;
+  }

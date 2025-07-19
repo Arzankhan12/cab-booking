@@ -1,0 +1,41 @@
+.package-image-container img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+  
+  .detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .detail-item .icon {
+    color: #ffb700;
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .attraction-list li, .inclusion-list li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 25px;
+  }
+  
+  .attraction-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ffb700;
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+  
+  .inclusion-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #ffb700;
+    font-weight: bold;
+  }

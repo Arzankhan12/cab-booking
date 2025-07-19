@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://indoreairportcabbooking.com/sitemap.xml
+
+Disallow: /TermAndCondition
+Disallow: /PrivacyPolicy

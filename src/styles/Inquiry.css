@@ -1,0 +1,130 @@
+.inquiry-section {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+}
+
+.inquiry-section h2 {
+  font-size: 32px;
+  /* margin-bottom: 20px; */
+  font-weight: 700;
+  text-align: center;
+}
+
+.inquiry-form {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.inquiry-form .form-group {
+  margin-bottom: 20px;
+}
+
+.inquiry-form .btn-primary {
+  background-color: #ff9800;
+  border-color: #ff9800;
+  border-radius: 6px;
+  padding: 12px 20px;
+  width: 20%;
+  font-size: 16px;
+}
+
+.inquiry-form .btn-primary:hover {
+  background-color: #ff9900ec;
+  border-color: #ff9800;
+}
+
+.inquiry-form .invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.row-parent {
+  margin-bottom: 20px;
+  width: 103%;
+}
+
+.row-parent-btn {
+  width: 103%;
+  text-align: end;
+}
+
+.inquiry-form .col-md-6 {
+  padding-right: 20px;
+}
+
+.inquiry-form .col-md-6 input,
+.inquiry-form .col-md-6 select {
+  width: 100%;
+}
+
+.custom-select-height {
+  height: 48px;
+}
+
+@media (max-width: 768px) {
+  .inquiry-form .row-parent {
+    display: block;
+  }
+  .inquiry-form .col-md-6 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .inquiry-form .btn-primary {
+    width: 100%;
+    font-size: 16px;
+    text-align: center;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .inquiry-form .btn-primary {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+  .inquiry-form h2 {
+    font-size: 24px;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .row-parent {
+    margin-bottom: 0px;
+    width: 110%;
+  }
+
+  .inquiry-section {
+    padding: 15px 15px 30px 15px;
+    margin-top: 0px;
+  }
+
+  .inquiry-form {
+    padding: 20px;
+  }
+
+  .inquiry-form .btn-primary {
+    padding: 12px 20px;
+    width: 105%;
+    font-size: 16px;
+    text-align: center;
+  }
+}
