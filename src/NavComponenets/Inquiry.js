@@ -38,11 +38,16 @@ const Inquiry = ({canonicalUrl}) => {
 
   // Initialize EmailJS with your public key from environment variables
   useEffect(() => {
+    if (!process.env.REACT_APP_EMAILJS_PUBLIC_KEY) {
+      console.error('EmailJS Public Key is not configured');
+      return;
+    }
     emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
   }, []);
 
   const handleSubmit = async (values, { resetForm }) => {
     setIsSubmitted(true);
+    setSubmissionMessage("");
     
     // Prepare email template parameters
     const templateParams = {
@@ -54,22 +59,49 @@ const Inquiry = ({canonicalUrl}) => {
       car_type: values.carType,
       pickup: values.pickupLocation,
       drop: values.dropLocation,
-      to_email: 'indoreairportcabooking@gmail.com' // Replace with your email
+      to_email: 'indoreairportcabooking@gmail.com'
     };
 
     try {
-      // Send email using EmailJS
-      const emailResponse = await emailjs.send(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-        templateParams
-      );
+      console.log('Sending email with params:', templateParams);
+      
+      // Validate EmailJS configuration
+      if (!process.env.REACT_APP_EMAILJS_SERVICE_ID || !process.env.REACT_APP_EMAILJS_TEMPLATE_ID) {
+        throw new Error('EmailJS service is not properly configured. Please check your environment variables.');
+      }
+
+      // Send email using EmailJS with better error handling
+      let emailResponse;
+      try {
+        emailResponse = await emailjs.send(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+          templateParams
+        );
+        console.log('EmailJS Response:', emailResponse);
+      } catch (emailError) {
+        console.error('EmailJS Error:', emailError);
+        let errorMessage = 'Failed to send email';
+        
+        // Handle specific Gmail authentication error
+        if (emailError.text && emailError.text.includes('Invalid grant')) {
+          errorMessage = 'Email service needs re-authentication. Please contact support.';
+          // You might want to log this as it requires admin attention
+          console.error('Gmail authentication failed. Please reconnect Gmail account in EmailJS dashboard.');
+        } else {
+          // For other errors, show the error message if available
+          errorMessage = emailError.text || emailError.message || errorMessage;
+        }
+        
+        throw new Error(`Email sending failed: ${errorMessage}`);
+      }
       
       if (emailResponse.status !== 200) {
-        throw new Error('Email sending failed');
+        throw new Error(`Email sending failed with status: ${emailResponse.status}`);
       }
 
       // Also send data to your existing API endpoint
+      console.log('Sending data to API:', values);
       const apiResponse = await fetch(
         "https://indoreairportcabbooking.com/api/contactdetails",
         {
@@ -81,22 +113,27 @@ const Inquiry = ({canonicalUrl}) => {
         }
       );
 
-      if (emailResponse.status === 200 && apiResponse.ok) {
-        setSubmissionMessage(
-          "Your query has been submitted successfully. We will get back to you soon."
-        );
-        resetForm();
-      } else {
-        throw new Error('Failed to submit form');
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      let errorMessage = "Error submitting your query. Please try again later.";
+      console.log('API Response:', apiResponse);
       
-      if (error.response) {
-        errorMessage = error.response.data?.message || errorMessage;
-      } else if (error.message) {
-        errorMessage = error.message;
+      if (!apiResponse.ok) {
+        const errorData = await apiResponse.json().catch(() => ({}));
+        throw new Error(errorData.message || `API request failed with status ${apiResponse.status}`);
+      }
+
+      setSubmissionMessage(
+        "Your query has been submitted successfully. We will get back to you soon."
+      );
+      resetForm();
+    } catch (error) {
+      console.error("Form submission error:", error);
+      let errorMessage = "Error submitting your query. ";
+      
+      if (error.message) {
+        errorMessage += error.message;
+      } else if (error.response?.data?.message) {
+        errorMessage += error.response.data.message;
+      } else {
+        errorMessage += "Please check your internet connection and try again.";
       }
       
       setSubmissionMessage(errorMessage);
